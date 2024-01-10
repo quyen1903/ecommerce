@@ -13,6 +13,10 @@ const keyTokenSchema = Schema({
         require:true,
         ref:'Shop'
     },
+    privateKey:{
+        type:String,
+        required:true,
+    },
     publicKey:{
         type:String,
         required:true,

@@ -2,7 +2,7 @@
 
 const shopModel = require('../models/shop.model');
 const bcrypt = require('bcrypt');
-const crypto = require('crypto');
+const crypto = require('node:crypto');
 const KeytokenService = require('./keyToken.service');
 const { createTokenPair } = require('../auth/authUtils');
 const { getInfoData } = require('../utils');
@@ -31,34 +31,24 @@ class AccessService{
                 name, email, password:passwordHash, roles:[RoleShop.SHOP]
             })
             if(newShop){
-                //create public key, private key
-                const {privateKey,publicKey}= crypto.generateKeyPairSync('rsa',{
-                    modulusLength:4096,
-                    publicKeyEncoding:{
-                        type:'pkcs1',
-                        format:'pem'
-                    },
-                    privateKeyEncoding:{
-                        type:'pkcs1',
-                        format:'pem'
-                    },
-                })
+
+                const privateKey = crypto.randomBytes(64).toString('hex');
+                const publicKey = crypto.randomBytes(64).toString('hex');
                 console.log({privateKey,publicKey})//save collection keystore
 
-                const publicKeyString = await KeytokenService.createKeyToken({
+                const keyStore = await KeytokenService.createKeyToken({
                     userId:newShop._id,
-                    publicKey
+                    publicKey,
+                    privateKey
                 })
-                if(!publicKeyString){
+                if(!keyStore){
                     return{
                         code:'xxx',
                         message:'publicKeyString error'
                     }
                 }
-
-                const publicKeyObject = crypto.createPublicKey(publicKeyString)
                 //create token pair
-                const tokens = await createTokenPair({userId:newShop._id,email},publicKeyString,privateKey)
+                const tokens = await createTokenPair({userId:newShop._id,email},publicKey,privateKey)
                 
                 console.log(`Create Token Success::`,tokens);
                 return{
@@ -75,6 +65,7 @@ class AccessService{
                 metadata:null
             }
         } catch (error) {
+            console.log(error)
             return{
                 code:'xxx',
                 message:error.message,
