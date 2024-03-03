@@ -1,5 +1,5 @@
 'use strict'
-const {Schema,model} = require('mongoose'); // Erase if already required
+const {model,Schema,Types} = require('mongoose'); // Erase if already required
 
 
 const DOCUMENT_NAME='Apikey'
