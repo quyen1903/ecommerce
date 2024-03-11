@@ -1,7 +1,7 @@
 'use strict'
 
 const { product, clothing, electronic } = require('../models/product.model');
-const {BadRequestError,ForbiddenError} = require('../core/error.response')
+const {BadRequestError} = require('../core/error.response')
 
 //define factory class to create product
 class ProductFactory {
