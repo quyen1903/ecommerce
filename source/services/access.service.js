@@ -4,7 +4,7 @@
     const bcrypt = require('bcrypt');
     const crypto = require('node:crypto');
     const KeyTokenService = require('./keyToken.service');
-    const { createTokenPair,verifyJWT, } = require('../auth/authUtils');
+    const { createTokenPair } = require('../auth/authUtils');
     const { getInfoData } = require('../utils');
     const { BadRequestError,ForbiddenError, AuthFailureError } = require('../core/error.response');
 
