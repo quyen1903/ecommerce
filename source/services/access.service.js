@@ -1,12 +1,12 @@
 'use strict'
 
-const shopModel = require('../models/shop.model');
-const bcrypt = require('bcrypt');
-const crypto = require('node:crypto');
-const KeyTokenService = require('./keyToken.service');
-const { createTokenPair } = require('../auth/authUtils');
-const { getInfoData } = require('../utils');
-const { BadRequestError,ConflictRequestError } = require('../core/error.response');
+    const shopModel = require('../models/shop.model');
+    const bcrypt = require('bcrypt');
+    const crypto = require('node:crypto');
+    const KeyTokenService = require('./keyToken.service');
+    const { createTokenPair,verifyJWT, } = require('../auth/authUtils');
+    const { getInfoData } = require('../utils');
+    const { BadRequestError,ForbiddenError, AuthFailureError } = require('../core/error.response');
 
 
 // services //
@@ -19,23 +19,55 @@ const RoleShop = {
 }
 
 class AccessService{
-    /*
-        1 - check email in database
-        2 - match password
-        3 - create access token, refresh token and save
-        4 - generate tokens
-        5 - get data return login
-    */
+
+    static handleRefreshTokenV2 = async({keyStore,user,refreshToken})=>{
+        const {userId, email} = user;
+        if(keyStore.refreshTokensUsed.includes(refreshToken)){
+            await KeyTokenService.deleteKeyById(userId)
+            throw new ForbiddenError('Something wrong happended, please relogin')
+        }
+
+        if(keyStore.refreshToken !== refreshToken)throw new AuthFailureError('something was wrong happended, please relogin')
+
+        const foundShop = await findByEmail({email})
+        if(!foundShop) throw new AuthFailureError('shop not registed');
+
+        //create 1 cap moi
+        const tokens = await createTokenPair({userId,email}, keyStore.publicKey, keyStore.privateKey)
+
+        //update token
+        await keyStore.updateOne({
+            $set:{//replace value of field with specific value
+                refreshToken:tokens.refreshToken
+            },
+            $addToSet:{
+                refreshTokensUsed:refreshToken
+            }
+        })
+
+        return {
+            user,
+            tokens  
+        }
+    }
+
     static logout = async(keyStore)=>{
         const delKey = await KeyTokenService.removeKeyById(keyStore._id);
         console.log({delKey})
         return delKey 
     }
     static login = async({email,password,refreshToken =  null})=>{
-        //1
+        /*
+            1 - check email in database
+            2 - match password
+            3 - create access token, refresh token and save
+            4 - generate tokens
+            5 - get data return login
+         */
+        // 1
         const foundShop = await findByEmail({email})
         if(!foundShop) throw new BadRequestError('Shop not registed');
-        //2
+        // 2
         const match = bcrypt.compare(password, foundShop.password)
         if(!match) throw new AuthFailureError('Authentication error')
         //3
@@ -51,8 +83,9 @@ class AccessService{
             publicKey,
             userId:foundShop._id,email
         })  
+        //5
         return{
-            shop:getInfoData({field:['_id','name'],object:foundShop}),
+            shop:getInfoData({field:['_id','email'],object:foundShop}),
             tokens
         }
     }

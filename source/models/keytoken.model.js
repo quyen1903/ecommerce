@@ -9,8 +9,8 @@ const COLLECTION_NAME='Keys'
 
 const keyTokenSchema = Schema({
     user:{
-        type:Schema.Types.ObjectId,
-        require:true,
+        type:Types.ObjectId,
+        required:true,
         ref:'Shop'
     },
     privateKey:{
@@ -21,13 +21,13 @@ const keyTokenSchema = Schema({
         type:String,
         required:true,
     },
-    refreshTokensUsed:{
+    refreshTokensUsed:{//used token, check if anyone use our old token, this must be hacker
         type:Array,
         default:[]
     },
     refreshToken:{
         type:String,
-        require:true
+        required:true
     }
 },{
     collection:COLLECTION_NAME,

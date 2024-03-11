@@ -1,36 +1,29 @@
 'use strict'
 
-const StatusCode = {
-    FORBIDEN:403,
-    CONFLICT:403
-}
-
-const ReasonStatusCode = {
-    FORBIDEN:'Bad request error',
-    CONFLICT:'Conflict error'
-}
-
+const { Error } = require('mongoose')
 const {
     StatusCodes,
     ReasonPhrases
 }= require('../utils/httpStatusCode')
-const reasonPhrases = require('../utils/reasonPhrases')
+
 
 class ErrorResponse extends Error{
     constructor(message,status){
         super(message),
         this.status = status
+
+        Error.captureStackTrace(this,this.constructor)
     }
 }
 
 class ConflictRequestError extends ErrorResponse{
-    constructor(message= ReasonStatusCode.CONFLICT,statusCode=StatusCode.FORBIDEN){
+    constructor(message= ReasonStatusCode.CONFLICT,statusCode=StatusCodes.FORBIDDEN){
         super(message,statusCode)
     }
 }
 
 class BadRequestError extends ErrorResponse{
-    constructor(message= ReasonStatusCode.CONFLICT,statusCode=StatusCode.FORBIDEN){
+    constructor(message= ReasonStatusCode.CONFLICT,statusCode=StatusCodes.FORBIDDEN){
         super(message,statusCode)
     }
 }
@@ -47,10 +40,16 @@ class NotFoundError extends ErrorResponse{
     }
 }
 
+class ForbiddenError extends ErrorResponse{
+    constructor(message= ReasonPhrases.FORBIDDEN, statusCode=StatusCodes.FORBIDDEN){
+        super(message,statusCode)
+    }
+}
 
 module.exports = {
     ConflictRequestError,
     BadRequestError,
     NotFoundError,
-    AuthFailureError
+    AuthFailureError,
+    ForbiddenError
 }
