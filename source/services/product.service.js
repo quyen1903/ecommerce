@@ -5,10 +5,6 @@ const {BadRequestError} = require('../core/error.response')
 
 //define factory class to create product
 class ProductFactory {
-    /*
-        type:'Clothing',
-        payload
-    */
     static async createProduct(type,payload){
         switch(type){
             case 'Electronics': return new Electronic(payload).createProduct()

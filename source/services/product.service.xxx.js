@@ -1,29 +1,83 @@
 'use strict'
 
 const { product, clothing, electronic, furniture } = require('../models/product.model');
-const {BadRequestError} = require('../core/error.response')
+const {BadRequestError} = require('../core/error.response');
 
-//define factory class to create product
+const { findAllDraftsForShop,
+        publishProductByShop,
+        findAllPublishForShop,
+        unPublishProductByShop,
+        searchProductByUser,
+    } = require('../models/repository/product.repo');
+
+/*
+    define factory class to create product
+*/
 class ProductFactory {
-    /*
-        type:'Clothing',
-        payload
-    */
 
+    //store product type and their corresponding class references
     static productRegistry = {}//key or class
 
+    /*
+        registe product type along with corresponding class reference in productRegistry
+        we can loop through product.config.js as strategy pattern to add more product type
+    */
     static registerProductType(type, classRef){
         ProductFactory.productRegistry[type] = classRef
     }
 
-    static async createProduct(type,payload){
-        const productClass = ProductFactory.productRegistry[type]
+    /*
+        create product of special type
+        retrieve class reference for specified product type from productRegistry
+    */ 
+    static async createProduct( type, payload ){
+        const productClass = ProductFactory.productRegistry[type]//reference to productRegistry, not override value inside of it.
         if(!productClass) throw new BadRequestError(`Invalid Product Types ${type}`)
-        return new productClass(payload).createProduct()
+        return new productClass(payload).createProduct()//invoke createProduct() of instantiated class
+    }
+
+    //PUT
+    static async publishProductByShop({product_shop, product_id}){
+        return await publishProductByShop({product_shop, product_id})
+    }
+
+    static async unPublishProductByShop({product_shop, product_id}){
+        return await unPublishProductByShop({product_shop, product_id})
+    }
+    //END PUT
+
+    /* query */
+    static async findAllDraftsForShop({product_shop, limit = 50, skip = 0}){
+        const query = {product_shop, isDraft:true}
+        return await findAllDraftsForShop({query, limit, skip})
+    }
+
+    static async findAllPublishForShop({product_shop, limit = 50, skip = 0}){
+        const query = {product_shop, isPubished:true}
+        return await findAllPublishForShop({query, limit, skip})
+    }
+
+    static async getListSearchProduct( {keySearch} ){
+        return searchProductByUser({keySearch})
+    }
+
+    static async findAllProducts( {limit = 50, sort='ctime'} ){
+        return findAllProducts()
+    }
+
+    static async findProduct( {} ){
+
+    }
+
+    static async updateProduct( {} ){
+
     }
 }
 
-//define base product class
+/*
+    define base product class
+    async createProduct meant to be overridden by subclass 
+*/
 class Product{
     constructor({
         product_name,
@@ -44,13 +98,13 @@ class Product{
         this.product_attributes = product_attributes,
         this.product_quantity = product_quantity
     }
-    // create new product
+    // create new product instance in database
     async createProduct(product_id){
         return await product.create({...this, _id:product_id})
     }
 }
 
-//define subclass for different product types Clothing
+
 
 class Clothing extends Product{
     async createProduct(){
@@ -62,6 +116,10 @@ class Clothing extends Product{
     }    
 }
 
+/* 
+    define for different product
+    inherit from Product class and override createProduct() 
+*/
 class Electronics extends Product{
     async createProduct(){
         const newElectronic = await electronic.create({
