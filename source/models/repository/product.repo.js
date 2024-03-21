@@ -1,8 +1,7 @@
 'use strict'
 
-const { result } = require('lodash');
-const { product,electronic,furniture,clothing } = require('../product.model');
-const { Types } = require('mongoose')
+const { product,electronic,furniture,clothing } = require('../../models/product.model');
+const { getSelectData, unGetSelectData } = require('../../utils/index')
 
 const findAllDraftsForShop = async( {query, limit, skip} )=>{
     return await queryProduct({query, limit, skip})
@@ -14,7 +13,6 @@ const findAllPublishForShop = async ({query, limit, skip})=>{
 /*
     this is full-text search
     we need index 
-
 */
 const searchProductByUser = async ({keySearch})=>{
     const regexSearch = new RegExp(keySearch)
@@ -73,7 +71,35 @@ const unPublishProductByShop = async ({product_shop, product_id})=>{
     return modifiedCount
 }
 
-const findAllProducts = async()
+
+
+const findAllProducts = async( {limit, sort, page , filter, select} )=>{
+    /*
+        pagination start from 1, not from 0
+        if sort equal ctime, sort by ascending, if sort not equal ctime, sort by decending
+    */
+    const skip = (page - 1)*limit;
+    const sortBy = sort === 'ctime' ? {_id: -1} : {_id: 1}
+    
+    const products = await product.find(filter)
+    .sort(sortBy)
+    .skip(skip)
+    .limit(limit)
+    .select(getSelectData(select))
+    .lean()
+
+    return products
+}
+
+const findProduct = async({product_id, unSelect})=>{
+    return await product.findById(product_id).select(unGetSelectData(unSelect))
+}
+
+const updateProductById=async( {productId, payload, model, isNew = true} )=>{
+    return await model.findByIdAndUpdate(productId, payload, {
+        new: isNew
+    })
+}
 
 const queryProduct = async ({query, limit, skip})=>{
     return await product.find(query)
@@ -92,4 +118,7 @@ module.exports = {
     findAllPublishForShop,
     unPublishProductByShop,
     searchProductByUser,
+    findAllProducts,
+    findProduct,
+    updateProductById,
 }

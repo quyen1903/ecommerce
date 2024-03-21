@@ -7,17 +7,23 @@ const { authenticationV2 } = require('../../auth/authUtils');
 const router = express.Router();
 
 router.get('/search/:keySearch',asyncHandler(productController.getListSearchProduct))
+router.get('',asyncHandler(productController.findAllProducts))
+router.get('/:product_id',asyncHandler(productController.findProduct))
+
+
 /* Authentication*/
 router.use(authenticationV2)
 
 ///////
-router.post('',asyncHandler(productController.createProduct))
+
+router.patch('/:productId',asyncHandler(productController.updateProduct));
+router.post('',asyncHandler(productController.createProduct));
 router.post('/pubish/:id',asyncHandler(productController.pubishProductByShop));
-router.post('/unpubish/:id',asyncHandler(productController.unPubishProductByShop))
+router.post('/unpubish/:id',asyncHandler(productController.unPubishProductByShop));
 
 
 //query
-router.get('/drafts/all',asyncHandler(productController.getAllDraftForShop))
-router.get('/pubished/all',asyncHandler(productController.getAllPublishForShop))
+router.get('/drafts/all',asyncHandler(productController.getAllDraftForShop));
+router.get('/pubished/all',asyncHandler(productController.getAllPublishForShop));
 
 module.exports = router
