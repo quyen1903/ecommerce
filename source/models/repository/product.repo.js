@@ -79,13 +79,18 @@ const findAllProducts = async( {limit, sort, page , filter, select} )=>{
         if sort equal ctime, sort by ascending, if sort not equal ctime, sort by decending
     */
     const skip = (page - 1)*limit;
+
+    /**
+     * if sort === 'ctime', sort by descending
+     * if not, sort by ascending 
+    */
     const sortBy = sort === 'ctime' ? {_id: -1} : {_id: 1}
     
     const products = await product.find(filter)
-    .sort(sortBy)
-    .skip(skip)
-    .limit(limit)
-    .select(getSelectData(select))
+    .sort(sortBy)//Sets the sort order
+    .skip(skip)//Specifies the number of documents to skip.
+    .limit(limit)//Specifies the maximum number of documents the query will return.
+    .select(getSelectData(select))//specify which document field to include 
     .lean()
 
     return products

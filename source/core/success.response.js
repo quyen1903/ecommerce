@@ -1,16 +1,18 @@
 'usestrict'
-const StatusCode = {
-    OK:200,
-    CREATED:201
-}
+// const StatusCode = {
+//     OK:200,
+//     CREATED:201
+// }
 
-const ReasonStatusCode={
-    CREATED:'Bad request error',
-    OK:'Success'
-}
+// const ReasonStatusCode={
+//     CREATED:'Bad request error',
+//     OK:'Success'
+// }
+
+const { StatusCodes, ReasonPhrases } = require('../utils/httpStatusCode')
 
 class SuccessResponse{
-    constructor({message, statusCode=StatusCode.OK, reasonStatusCode=ReasonStatusCode.OK, metadata = {} }){
+    constructor({message, statusCode=StatusCodes.OK, reasonStatusCode=ReasonPhrases.OK, metadata = {} }){
         this.message = !message ? reasonStatusCode : message
         this.status = statusCode
         this.metadata = metadata
@@ -27,7 +29,7 @@ class OK extends SuccessResponse{
 }
 
 class CREATED extends SuccessResponse{
-    constructor({options = {},message,statusCode=StatusCode.CREATED,reasonStatusCode=ReasonStatusCode.CREATED,metadata}){
+    constructor({options = {},message,statusCode=StatusCodes.CREATED,reasonStatusCode=ReasonPhrases.CREATED,metadata}){
         super({message,statusCode,reasonStatusCode,metadata})
         this.options = options
     }   

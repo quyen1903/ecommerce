@@ -95,4 +95,10 @@ class ProductController{
     }
     //end query
 }
+
+/**
+ * return instance of controller
+ * export singleton instance and share across application
+ * 
+ **/
 module.exports = new ProductController()

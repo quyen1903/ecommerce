@@ -40,7 +40,7 @@ class AccessService{
             $set:{//replace value of field with specific value
                 refreshToken:tokens.refreshToken
             },
-            $addToSet:{
+            $addToSet:{//adds a value to an array unless the value is already present, in which case it does nothing to array
                 refreshTokensUsed:refreshToken
             }
         })
