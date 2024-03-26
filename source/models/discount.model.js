@@ -1,7 +1,6 @@
 'use strict'
 const { model,Schema } = require('mongoose'); // Erase if already required
 
-
 const DOCUMENT_NAME='Discount'
 const COLLECTION_NAME='discounts'
 // Declare the Schema of the Mongo model

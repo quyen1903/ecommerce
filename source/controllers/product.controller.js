@@ -2,7 +2,7 @@
 
 const ProductService = require("../services/product.service")
 const ProductServiceV2 = require("../services/product.service.xxx")
-const { OK, CREATED, SuccessResponse } = require('../core/success.response')
+const { SuccessResponse } = require('../core/success.response')
 
 class ProductController{
 

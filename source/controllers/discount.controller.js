@@ -1,6 +1,6 @@
 
 const DiscountService = require("../services/discount.service")
-const { OK, CREATED, SuccessResponse } = require('../core/success.response')
+const { SuccessResponse } = require('../core/success.response')
 
 class DiscountController{
     createDiscountCode = async(req,res,next)=>{

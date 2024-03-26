@@ -62,10 +62,6 @@ class DiscountService{
         return newDiscount
     }
 
-    static async updateDiscountCode(){
-
-    }
-
     /*
         get all discount code available with products
     */
