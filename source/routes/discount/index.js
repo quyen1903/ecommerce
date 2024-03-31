@@ -15,7 +15,7 @@ router.get('/list_product_code', asyncHandler(discountController.getAllDiscountC
 /* Authentication*/
 router.use(authenticationV2)
 
-router.post('',discountController.createDiscountCode);
-router.get('',discountController.getAllDiscountCodes);
+router.post('',asyncHandler(discountController.createDiscountCode));
+router.get('',asyncHandler(discountController.getAllDiscountCodes));
 
 module.exports = router
