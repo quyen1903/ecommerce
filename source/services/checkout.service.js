@@ -1,6 +1,6 @@
 'use strict'
 const { findCartById } = require('../models/repository/cart.repo')
-const { BadRequestError, NotFoundError } = require("../core/error.response");
+const { BadRequestError } = require("../core/error.response");
 const { checkProductByServer } = require('../models/repository/product.repo');
 const { getDiscountAmount } = require('./discount.service');
 const { acquireLock, releaseLock } = require('./redis.service');

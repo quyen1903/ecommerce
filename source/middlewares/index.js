@@ -1,6 +1,4 @@
 'use strict'
-
-const { messageLink } = require('discord.js')
 const Logger = require('../loggers/discord.log.v2')
 
 const pushToLogDiscord = async(req, res, next)=>{

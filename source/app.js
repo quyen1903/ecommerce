@@ -13,8 +13,19 @@ app.use(express.json());
 app.use(express.urlencoded({
     extended:true
 }));
-//init database
+
+/***
+ * connect redis and mongodb
+ */
+require('./tests/inventory.test');
+const productTest = require('./tests/product.test');
+productTest.purchaseProduct('product:001',10)
 require('./dbs/init.mongodb');
+
+//this is redis
+// const initRedis = require('./dbs/init.redis')
+// initRedis.initRedis()
+
 
 //init routes
 app.use('/',require('./routes'))

@@ -1,16 +1,7 @@
 'use strict'
-require('dotenv').config();
+require('dotenv').config(); 
 const { Client, GatewayIntentBits, channelLink } = require('discord.js');
 const { parseInt } = require('lodash');
-
-const client = new Client({
-    intents:[
-        GatewayIntentBits.DirectMessages,
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.MessageContent
-    ]
-})  
 
 class LoggerService{
     constructor(){
