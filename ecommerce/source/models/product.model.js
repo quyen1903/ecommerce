@@ -55,7 +55,7 @@ const productSchema = new Schema({
         index:true,
         select:false//specifies projection of query, now isDraft will not return in our query 
     },
-    isPubished:{
+    isPublished:{
         type:Boolean,
         default:false,
         index:true,

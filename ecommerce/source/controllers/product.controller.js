@@ -25,9 +25,9 @@ class ProductController{
         }).send(res)
     }
 
-    pubishProductByShop = async(req,res,next)=>{
+    publishProductByShop = async(req,res,next)=>{
         new SuccessResponse({
-            message: 'Pubish new product success!',
+            message: 'publish new product success!',
             metadata: await ProductServiceV2.publishProductByShop({
                 product_id: req.params.id,
                 product_shop: req.user.userId
@@ -35,9 +35,9 @@ class ProductController{
         }).send(res)
     }
 
-    unPubishProductByShop = async(req,res,next)=>{
+    unpublishProductByShop = async(req,res,next)=>{
         new SuccessResponse({
-            message: 'Undo pubish product success!',
+            message: 'Undo publish product success!',
             metadata: await ProductServiceV2.unPublishProductByShop({
                 product_id: req.params.id,
                 product_shop: req.user.userId
@@ -63,7 +63,7 @@ class ProductController{
     }
     getAllPublishForShop = async(req,res,next)=>{
         new SuccessResponse({
-            message: 'Get list Pubish success',
+            message: 'Get list publish success',
             metadata: await ProductServiceV2.findAllPublishForShop({
                 product_shop:req.user.userId
             })

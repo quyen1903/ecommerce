@@ -1,12 +1,12 @@
 'use strict'
 
-    const shopModel = require('../models/shop.model');
-    const bcrypt = require('bcrypt');
-    const crypto = require('node:crypto');
-    const KeyTokenService = require('./keyToken.service');
-    const { createTokenPair } = require('../auth/authUtils');
-    const { getInfoData } = require('../utils');
-    const { BadRequestError,ForbiddenError, AuthFailureError } = require('../core/error.response');
+const shopModel = require('../models/shop.model');
+const bcrypt = require('bcrypt');
+const crypto = require('node:crypto');
+const KeyTokenService = require('./keyToken.service');
+const { createTokenPair } = require('../auth/authUtils');
+const { getInfoData } = require('../utils');
+const { BadRequestError,ForbiddenError, AuthFailureError } = require('../core/error.response');
 
 
 // services //

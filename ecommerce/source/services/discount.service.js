@@ -85,7 +85,7 @@ class DiscountService{
             products = await findAllProducts({
                 filter:{
                     product_shop:convertToObjectIdMongodb(shopId),
-                    isPubished:true
+                    ispublished:true
                 },
                 limit:+limit,
                 page:+page,
@@ -102,7 +102,7 @@ class DiscountService{
             products = await findAllProducts({
                 filter:{
                     _id: { $in: discount_product_ids },
-                    isPubished:true
+                    ispublished:true
                 },
                 limit:+limit,
                 page:+page,

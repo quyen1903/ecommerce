@@ -75,7 +75,7 @@ class ProductFactory {
     }
 
     static async findAllPublishForShop({product_shop, limit = 50, skip = 0}){
-        const query = {product_shop, isPubished:true}
+        const query = {product_shop, ispublished:true}
         return await findAllPublishForShop({query, limit, skip})
     }
 
@@ -83,7 +83,7 @@ class ProductFactory {
         return searchProductByUser({keySearch})
     }
 
-    static async findAllProducts( {limit = 50, sort='ctime', page = 1, filter = {isPubished: true}} ){
+    static async findAllProducts( {limit = 50, sort='ctime', page = 1, filter = {ispublished: true}} ){
         return await findAllProducts({limit, sort, filter, page,
             select:['product_name', 'product_thumb', 'product_price']
         })
@@ -162,6 +162,7 @@ class Clothing extends Product{
 
         const newProduct = await super.createProduct(newClothing._id)
         if(!newProduct) throw new BadRequestError('create new Product error')
+        return newProduct
     }
 
     async updateProduct( productId ){
@@ -197,6 +198,7 @@ class Electronics extends Product{
 
         const newProduct = await super.createProduct(newElectronic._id)
         if(!newProduct) throw new BadRequestError('create new Product error')
+        return newProduct
     }
 
     async updateProduct( productId ){
@@ -223,6 +225,7 @@ class Furniture extends Product{
 
         const newProduct = await super.createProduct(newFurniture._id)
         if(!newProduct) throw new BadRequestError('create new Product error')
+        return newProduct
     }
 
     async updateProduct( productId ){

@@ -18,7 +18,7 @@ const searchProductByUser = async ({keySearch})=>{
     const regexSearch = new RegExp(keySearch)
     const results = await product.find(
         {
-            isPubished:true,
+            ispublished:true,
             $text:{
                 $search:regexSearch
             }
@@ -50,7 +50,7 @@ const publishProductByShop = async ({product_shop, product_id})=>{
     if(!foundShop) return null
 
     foundShop.isDraft = false
-    foundShop.isPubished = true
+    foundShop.isPublished = true
     const { modifiedCount} = await foundShop.updateOne(foundShop)
     
     return modifiedCount
@@ -65,7 +65,7 @@ const unPublishProductByShop = async ({product_shop, product_id})=>{
     if(!foundShop) return null
 
     foundShop.isDraft = true
-    foundShop.isPubished = false
+    foundShop.isPublished = false
     const { modifiedCount} = await foundShop.updateOne(foundShop)
     
     return modifiedCount
