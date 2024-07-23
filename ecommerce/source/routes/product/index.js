@@ -18,8 +18,8 @@ router.use(authenticationV2)
 
 router.patch('/:productId',asyncHandler(productController.updateProduct));
 router.post('',asyncHandler(productController.createProduct));
-router.post('/publish/:id',asyncHandler(productController.pubishProductByShop));
-router.post('/unpublish/:id',asyncHandler(productController.unPubishProductByShop));
+router.post('/publish/:id',asyncHandler(productController.publishProductByShop));
+router.post('/unpublish/:id',asyncHandler(productController.unpublishProductByShop));
 
 
 //query
