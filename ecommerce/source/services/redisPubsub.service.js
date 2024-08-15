@@ -1,3 +1,4 @@
+'use strict'
 const Redis = require('redis');
 
 class RedisPubSubService{

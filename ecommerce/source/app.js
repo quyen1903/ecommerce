@@ -23,8 +23,8 @@ productTest.purchaseProduct('product:001',10)
 require('./dbs/init.mongodb');
 
 //this is redis
-// const initRedis = require('./dbs/init.redis')
-// initRedis.initRedis()
+const initRedis = require('./dbs/init.redis')
+initRedis.initRedis()
 
 
 //init routes

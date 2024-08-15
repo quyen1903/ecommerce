@@ -1,7 +1,5 @@
 'use strict'
 
-'use strict'
-
 const InventoryService = require('../services/inventory.service');
 const { SuccessResponse } = require('../core/success.response');
 
