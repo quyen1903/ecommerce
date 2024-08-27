@@ -83,7 +83,7 @@ class CheckoutService{
         const { shop_order_ids_new, checkout_order} = await CheckoutService.checkoutReview({
             cartId,
             userId,
-            shop_order_ids
+            shop_order_ids:shop_order_ids_new
         })
         const products = shop_order_ids_new.flatMap(order => order.item_products);
         console.log(`[1]`, products)
